@@ -1,0 +1,57 @@
+random_forest:
+  n_estimators: 100
+  criterion: 'gini'
+  max_depth: 6
+  min_samples_split: 2
+  min_samples_leaf: 1
+  min_weight_fraction_leaf: 0.0
+  max_features: 'auto'
+  max_leaf_nodes: null
+  min_impurity_decrease: 0.0
+  min_impurity_split: null
+  bootstrap: true
+  oob_score: false
+  n_jobs: null
+  # This is a different random seed than main.random_seed
+  # because this is used only within the RandomForest
+  random_state: 42
+  verbose: 0
+  warm_start: false
+  class_weight: "balanced"
+  ccp_alpha: 0.0
+  max_samples: null
+features:
+  numerical:
+    - 'LIMIT_BAL'
+    - 'AGE'
+    - 'PAY_0'
+    - 'PAY_2'
+    - 'PAY_3'
+    - 'PAY_4'
+    - 'PAY_5'
+    - 'PAY_6'
+    - 'BILL_AMT1'
+    - 'BILL_AMT2'
+    - 'BILL_AMT3'
+    - 'BILL_AMT4'
+    - 'BILL_AMT5'
+    - 'BILL_AMT6'
+    - 'PAY_AMT1'
+    - 'PAY_AMT2'
+    - 'PAY_AMT3'
+    - 'PAY_AMT4'
+    - 'PAY_AMT5'
+    - 'PAY_AMT6'
+    - 'SEX_1'
+    - 'SEX_2'
+    - 'EDUCATION_0'
+    - 'EDUCATION_1'
+    - 'EDUCATION_2'
+    - 'EDUCATION_3'
+    - 'EDUCATION_4'
+    - 'EDUCATION_5'
+    - 'EDUCATION_6'
+    - 'MARRIAGE_0'
+    - 'MARRIAGE_1'
+    - 'MARRIAGE_2'
+    - 'MARRIAGE_3'
