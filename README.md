@@ -30,35 +30,35 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
 - List images (including hidden)
 
-        docker image ls -a
+      docker image ls -a
 
 - List Containers (including hidden)
 
-        docker ps -a
+      docker ps -a
 
 - Move to the Project Repo
 
-        cd Documents/ProjectRepos
+      cd Documents/ProjectRepos
 
 - Run the postgress container: 
 
-        docker run --network cesar_net --expose=5432 -p 5432:5432 -d -v $PWD/pg_data_1/:/var/lib/postgresql/data/ --name pg_mlflow -e POSTGRES_USER='user_pg' -e POSTGRES_PASSWORD='pass_pg' postgres
+      docker run --network cesar_net --expose=5432 -p 5432:5432 -d -v $PWD/pg_data_1/:/var/lib/postgresql/data/ --name pg_mlflow -e POSTGRES_USER='user_pg' -e POSTGRES_PASSWORD='pass_pg' postgres
 
 - Download this Repo
 
-        git clone https://github.com/lcajachahua/model-credit-mlflow.git
+      git clone https://github.com/lcajachahua/model-credit-mlflow.git
 
 - After downloading the repo, move to the root folder
 
-        cd model-credit-mlflow
+      cd model-credit-mlflow
 
 - Build the project
 
-        docker build -t model-credit-mlflow .
+      docker build -t model-credit-mlflow .
 
 - Run the mlflow server container: 
 
-        docker run -d -p 7755:5000 -v $PWD/container_artifacts:$PWD/container_artifacts --env-file local.env --network cesar_net --name test mlflow_cesar
+      docker run -d -p 7755:5000 -v $PWD/container_artifacts:$PWD/container_artifacts --env-file local.env --network cesar_net --name test mlflow_cesar
 
 
 
@@ -66,32 +66,32 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
 1. downloading
 
-        mlflow run ./download -P step=download_data -P file_url="https://github.com/lcajachahua/model-credit-mlflow/raw/main/_data/default_of_credit_card_clients.csv?raw=true" -P artifact_name=raw_data.csv -P artifact_description="Pipeline for data downloading" --experiment-name credit_card_default --run-name download_data
+       mlflow run ./download -P step=download_data -P file_url="https://github.com/lcajachahua/model-credit-mlflow/raw/main/_data/default_of_credit_card_clients.csv?raw=true" -P artifact_name=raw_data.csv -P artifact_description="Pipeline for data downloading" --experiment-name credit_card_default --run-name download_data
     
 2. preprocessing
 
-        mlflow run ./preprocess -P step=preprocess -P input_step=download_data -P input_artifact=raw_data.csv -P artifact_name=preprocessed_data.csv -P artifact_description="Pipeline for data preprocessing" --experiment-name credit_card_default --run-name preprocess
+       mlflow run ./preprocess -P step=preprocess -P input_step=download_data -P input_artifact=raw_data.csv -P artifact_name=preprocessed_data.csv -P artifact_description="Pipeline for data preprocessing" --experiment-name credit_card_default --run-name preprocess
  
 3. check/tests
 
-        mlflow run ./check_data -P step=check_data -P input_step=preprocess -P reference_artifact=preprocessed_data.csv -P sample_artifact=preprocessed_data.csv -P ks_alpha=0.05 --experiment-name credit_card_default --run-name check_data
+       mlflow run ./check_data -P step=check_data -P input_step=preprocess -P reference_artifact=preprocessed_data.csv -P sample_artifact=preprocessed_data.csv -P ks_alpha=0.05 --experiment-name credit_card_default --run-name check_data
     
 4. segregation
 
-        mlflow run ./segregate -P step=segregate -P input_step=preprocess -P input_artifact=preprocessed_data.csv -P artifact_root=data -P test_size=0.3 -P stratify=default --experiment-name credit_card_default --run-name segregate
+       mlflow run ./segregate -P step=segregate -P input_step=preprocess -P input_artifact=preprocessed_data.csv -P artifact_root=data -P test_size=0.3 -P stratify=default --experiment-name credit_card_default --run-name segregate
     
 5. modeling
 
-        mlflow run ./random_forest -P step=random_forest -P input_step=segregate -P train_data=data/data_train.csv -P model_config=rf_config.yaml -P export_artifact=model_export -P random_seed=42 -P val_size=0.3 -P stratify=default --experiment-name credit_card_default --run-name random_forest
+       mlflow run ./random_forest -P step=random_forest -P input_step=segregate -P train_data=data/data_train.csv -P model_config=rf_config.yaml -P export_artifact=model_export -P random_seed=42 -P val_size=0.3 -P stratify=default --experiment-name credit_card_default --run-name random_forest
     
 6. evaluate
 
-        mlflow run ./evaluate -P step=evaluate -P input_model_step=random_forest -P model_export=model_export -P input_data_step=segregate -P test_data=data/data_test.csv --experiment-name credit_card_default --run-name evaluate
+       mlflow run ./evaluate -P step=evaluate -P input_model_step=random_forest -P model_export=model_export -P input_data_step=segregate -P test_data=data/data_test.csv --experiment-name credit_card_default --run-name evaluate
 
 9. run all ML Pipeline (workflow)     
 
-        mlflow run .
-        mlflow run . -P hydra_options="main.experiment_name=dev_all_credit_card_default"
+       mlflow run .
+       mlflow run . -P hydra_options="main.experiment_name=dev_all_credit_card_default"
 
 10. run hyperparameter tunning
 
@@ -105,18 +105,18 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
 a. Download the mlflow model (./serve path)
 
-        mlflow artifacts download -u {artifact_uri(../artifacts/model_export)} -d {destination_path(.)}
-        mlflow artifacts download -u {artifact_uri(../artifacts/data/data_test.csv)} -d {destination_path(.)}
+    mlflow artifacts download -u {artifact_uri(../artifacts/model_export)} -d {destination_path(.)}
+    mlflow artifacts download -u {artifact_uri(../artifacts/data/data_test.csv)} -d {destination_path(.)}
         
 b. Test the mlflow model
 
-        mlflow models predict -t json -i model_export/input_example.json -m model_export
-        mlflow models predict -t csv -i data_test.csv -m model_export
+    mlflow models predict -t json -i model_export/input_example.json -m model_export
+    mlflow models predict -t csv -i data_test.csv -m model_export
         
 ##### Online
 
-        mlflow models serve -m model_export
-        mlflow models serve -m model_export & (background)
+    mlflow models serve -m model_export
+    mlflow models serve -m model_export & (background)
         
 ![alt][model_serving]
 
