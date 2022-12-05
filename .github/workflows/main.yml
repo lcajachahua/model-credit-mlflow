@@ -3,7 +3,7 @@ on: [ push ]
 jobs:
   run:
     runs-on: [ ubuntu-latest ]
-    container: docker.io/cesarch94/cml_conda
+    container: https://github.com/iterative/cml/blob/master/Dockerfile
     steps:
       - uses: actions/checkout@v2
 
