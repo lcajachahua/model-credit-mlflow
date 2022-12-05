@@ -25,6 +25,43 @@ For sake of simplicity, the components of the architecture will be explain as "s
 10. Alert triggers: Should be done by integrating alerting tools the company use at the time (PagerDuty / Slack )
 11. Retraining: Should reuse the Automated Pipeline we've created after CI/CD, also triggered by a drift detection rule
 
+
+#### Starting the Demo
+
+- List images (including hidden)
+
+        docker image ls -a
+
+- List Containers (including hidden)
+
+        docker ps -a
+
+- Move to the Project Repo
+
+        cd Documents/ProjectRepos
+
+- Run the postgress container: 
+
+        docker run --network cesar_net --expose=5432 -p 5432:5432 -d -v $PWD/pg_data_1/:/var/lib/postgresql/data/ --name pg_mlflow -e POSTGRES_USER='user_pg' -e POSTGRES_PASSWORD='pass_pg' postgres
+
+- Download this Repo
+
+        git clone https://github.com/lcajachahua/model-credit-mlflow.git
+
+- After downloading the repo, move to the root folder
+
+        cd model-credit-mlflow
+
+- Build the project
+
+        docker build -t model-credit-mlflow .
+
+- Run the mlflow server container: 
+
+        docker run -d -p 7755:5000 -v $PWD/container_artifacts:$PWD/container_artifacts --env-file local.env --network cesar_net --name test mlflow_cesar
+
+
+
 #### Step MLOps - MLFlow
 
 1. downloading
@@ -96,9 +133,3 @@ You can see the CI/CD pipeline for the credit card default model with Github Act
 ![alt][cicd_ml]
         
 
-#### Extra Notes to spin-up a mlflow docker container
-- create docker network: docker network create cesar_net
-- run a postgress container: docker run --network cesar_net --expose=5432 -p 5432:5432 -d -v $PWD/pg_data_1/:/var/lib/postgresql/data/ --name pg_mlflow -e POSTGRES_USER='user_pg' -e POSTGRES_PASSWORD='pass_pg' postgres
-- build Dockerfile: docker build -t mlflow_cesar .
-- modify env var default_artifact_root in local.env with your current directory (also in docker-compose on Dag-batch-drift)
-- run mlflow server container: docker run -d -p 7755:5000 -v $PWD/container_artifacts:$PWD/container_artifacts --env-file local.env --network cesar_net --name test mlflow_cesar
