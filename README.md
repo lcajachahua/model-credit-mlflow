@@ -29,7 +29,7 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
 1. downloading
 
-        mlflow run ./download -P step=download_data -P file_url="https://github.com/cesarcharallaolazo/credit_card_default_example/raw/main/_data/default_of_credit_card_clients.csv?raw=true" -P artifact_name=raw_data.csv -P artifact_description="Pipeline for data downloading" --experiment-name credit_card_default --run-name download_data
+        mlflow run ./download -P step=download_data -P file_url="https://github.com/lcajachahua/model-credit-mlflow/raw/main/_data/default_of_credit_card_clients.csv?raw=true" -P artifact_name=raw_data.csv -P artifact_description="Pipeline for data downloading" --experiment-name credit_card_default --run-name download_data
     
 2. preprocessing
 
@@ -91,7 +91,7 @@ b. Test the mlflow model
 
 #### CI/CD: Continuous machine learning integration
 
-You can see the CI/CD pipeline for the credit card default model with Github Actions ("Actions" tab on Github), each commit triggers and executes the CI/CD pipeline (the last commit https://github.com/cesarcharallaolazo/credit_card_default_example/commit/ff393ce2784151e3ac78f12c215b64bf527697f9#comments)
+You can see the CI/CD pipeline for the credit card default model with Github Actions ("Actions" tab on Github), each commit triggers and executes the CI/CD pipeline (the last commit https://github.com/lcajachahua/model-credit-mlflow/commit/ff393ce2784151e3ac78f12c215b64bf527697f9#comments)
 
 ![alt][cicd_ml]
         
@@ -102,4 +102,3 @@ You can see the CI/CD pipeline for the credit card default model with Github Act
 - build Dockerfile: docker build -t mlflow_cesar .
 - modify env var default_artifact_root in local.env with your current directory (also in docker-compose on Dag-batch-drift)
 - run mlflow server container: docker run -d -p 7755:5000 -v $PWD/container_artifacts:$PWD/container_artifacts --env-file local.env --network cesar_net --name test mlflow_cesar
-
