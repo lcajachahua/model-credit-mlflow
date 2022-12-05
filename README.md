@@ -60,44 +60,61 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
       docker run -d -p 7755:5000 -v $PWD/container_artifacts:$PWD/container_artifacts --env-file local.env --network cesar_net --name test mlflow_cesar
 
+- Open JupyterLab and Activate the Virtual Environment
+
+      conda activate pipeline_test
 
 
 #### Step MLOps - MLFlow
 
-1. downloading
+1. Downloading
 
        mlflow run ./download -P step=download_data -P file_url="https://github.com/lcajachahua/model-credit-mlflow/raw/main/_data/default_of_credit_card_clients.csv?raw=true" -P artifact_name=raw_data.csv -P artifact_description="Pipeline for data downloading" --experiment-name credit_card_default --run-name download_data
     
-2. preprocessing
+2. Preprocessing
 
        mlflow run ./preprocess -P step=preprocess -P input_step=download_data -P input_artifact=raw_data.csv -P artifact_name=preprocessed_data.csv -P artifact_description="Pipeline for data preprocessing" --experiment-name credit_card_default --run-name preprocess
  
-3. check/tests
+3. Check/tests
 
        mlflow run ./check_data -P step=check_data -P input_step=preprocess -P reference_artifact=preprocessed_data.csv -P sample_artifact=preprocessed_data.csv -P ks_alpha=0.05 --experiment-name credit_card_default --run-name check_data
     
-4. segregation
+4. Segregation
 
        mlflow run ./segregate -P step=segregate -P input_step=preprocess -P input_artifact=preprocessed_data.csv -P artifact_root=data -P test_size=0.3 -P stratify=default --experiment-name credit_card_default --run-name segregate
     
-5. modeling
+5. Modeling
 
        mlflow run ./random_forest -P step=random_forest -P input_step=segregate -P train_data=data/data_train.csv -P model_config=rf_config.yaml -P export_artifact=model_export -P random_seed=42 -P val_size=0.3 -P stratify=default --experiment-name credit_card_default --run-name random_forest
     
-6. evaluate
+6. Evaluate
 
        mlflow run ./evaluate -P step=evaluate -P input_model_step=random_forest -P model_export=model_export -P input_data_step=segregate -P test_data=data/data_test.csv --experiment-name credit_card_default --run-name evaluate
 
-9. run all ML Pipeline (workflow)     
+9. Run all ML Pipeline (workflow)     
 
        mlflow run .
        mlflow run . -P hydra_options="main.experiment_name=dev_all_credit_card_default"
 
-10. run hyperparameter tunning
+10. Run hyperparameter tunning
 
         mlflow run . -P hydra_options="-m random_forest_pipeline.random_forest.n_estimators=10,50,80"
         mlflow run . -P hydra_options="-m main.experiment_name=dev_all_credit_card_default random_forest_pipeline.random_forest.n_estimators=12,52,82"
         mlflow run . -P hydra_options="-m random_forest_pipeline.random_forest.n_estimators=15,55,85 random_forest_pipeline.random_forest.max_depth=range(7,17,5)"
+
+11. See the Online Environment. To finish the UI, press Ctrl+C
+
+        mlflow ui
+
+
+#### Finishing the Environment
+
+- Close JupyterLab and finish the docker containers
+
+      docker stop test
+      docker stop pg_mlflow
+
+
 
 #### Mlflow Deployment
 
@@ -119,6 +136,9 @@ b. Test the mlflow model
     mlflow models serve -m model_export & (background)
         
 ![alt][model_serving]
+
+
+
 
 #### Drift detection
 
