@@ -14,7 +14,7 @@ main:
   # pseudo-random operations
   random_seed: 42
 data:
-  file_url: "https://github.com/cesarcharallaolazo/credit_card_default_example/blob/master/_data/default_of_credit_card_clients.csv?raw=true"
+  file_url: "https://github.com/lcajachahua/model-credit-mlflow/blob/master/_data/default_of_credit_card_clients.csv?raw=true"
   reference_dataset: "preprocessed_data.csv"
   # Threshold for Kolomorov-Smirnov test
   ks_alpha: 0.05
