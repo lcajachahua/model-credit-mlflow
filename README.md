@@ -6,7 +6,7 @@
 
 # Credit Card Default Example
 
-## Proposed MLOPS Architecture
+## Used MLOPS Architecture
 
 ![alt][mlops_architecture]
 
