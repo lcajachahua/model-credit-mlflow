@@ -91,18 +91,7 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
        mlflow run ./evaluate -P step=evaluate -P input_model_step=random_forest -P model_export=model_export -P input_data_step=segregate -P test_data=data/data_test.csv --experiment-name credit_card_default --run-name evaluate
 
-9. Run all ML Pipeline (workflow)     
-
-       mlflow run .
-       mlflow run . -P hydra_options="main.experiment_name=dev_all_credit_card_default"
-
-10. Run hyperparameter tunning
-
-        mlflow run . -P hydra_options="-m random_forest_pipeline.random_forest.n_estimators=10,50,80"
-        mlflow run . -P hydra_options="-m main.experiment_name=dev_all_credit_card_default random_forest_pipeline.random_forest.n_estimators=12,52,82"
-        mlflow run . -P hydra_options="-m random_forest_pipeline.random_forest.n_estimators=15,55,85 random_forest_pipeline.random_forest.max_depth=range(7,17,5)"
-
-11. See the Online Environment. To finish the UI, press Ctrl+C
+7. See the Online Environment. To finish the UI, press Ctrl+C
 
         mlflow ui
 
@@ -116,14 +105,10 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
       mlflow artifacts download -r <ID DEL MODELO>
         
-- Test the mlflow model
-
-      mlflow models predict -t json -i model_export/input_example.json -m model_export
-      mlflow models predict -t csv -i data_test.csv -m model_export
         
-##### Online
+##### Online (Requiere servicio web activo)
 
-    mlflow models serve -m model_export
+    mlflow models serve -m <PATH EXPORTADO>model_export
     
 
 #### Finishing the Environment
