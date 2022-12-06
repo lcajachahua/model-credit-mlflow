@@ -40,10 +40,6 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
       cd Documents/ProjectRepos
 
-- Run the postgress container: 
-
-      docker run --network cesar_net --expose=5432 -p 5432:5432 -d -v $PWD/pg_data_1/:/var/lib/postgresql/data/ --name pg_mlflow -e POSTGRES_USER='user_pg' -e POSTGRES_PASSWORD='pass_pg' postgres
-
 - Download this Repo
 
       git clone https://github.com/lcajachahua/model-credit-mlflow.git
@@ -56,13 +52,14 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
       docker build -t model-credit-mlflow .
 
-- Run the mlflow server container: 
+- (Optional) You can now start Jupyterlab or continue working on command line
 
-      docker run -d -p 7755:5000 -v $PWD/container_artifacts:$PWD/container_artifacts --env-file local.env --network cesar_net --name test mlflow_cesar
+      jupyter lab
 
 - Activate the Virtual Environment
 
       conda activate pipeline_test
+
 
 
 #### Step MLOps - MLFlow
@@ -111,12 +108,9 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
 #### Finishing the Environment
 
-- Deactivate the Virtual Environment and finish the docker containers
+- Deactivate the Virtual Environment
 
       conda deactivate
-      docker stop test
-      docker stop pg_mlflow
-
 
 
 
