@@ -60,7 +60,7 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
       docker run -d -p 7755:5000 -v $PWD/container_artifacts:$PWD/container_artifacts --env-file local.env --network cesar_net --name test mlflow_cesar
 
-- Open JupyterLab and Activate the Virtual Environment
+- Activate the Virtual Environment
 
       conda activate pipeline_test
 
@@ -107,34 +107,38 @@ For sake of simplicity, the components of the architecture will be explain as "s
         mlflow ui
 
 
-#### Finishing the Environment
-
-- Close JupyterLab and finish the docker containers
-
-      docker stop test
-      docker stop pg_mlflow
-
-
 
 #### Mlflow Deployment
 
 ##### Batch
 
-a. Download the mlflow model (./serve path)
+- Download the mlflow model
 
-    mlflow artifacts download -u {artifact_uri(../artifacts/model_export)} -d {destination_path(.)}
-    mlflow artifacts download -u {artifact_uri(../artifacts/data/data_test.csv)} -d {destination_path(.)}
+      mlflow artifacts download -r <ID DEL MODELO>
         
-b. Test the mlflow model
+- Test the mlflow model
 
-    mlflow models predict -t json -i model_export/input_example.json -m model_export
-    mlflow models predict -t csv -i data_test.csv -m model_export
+      mlflow models predict -t json -i model_export/input_example.json -m model_export
+      mlflow models predict -t csv -i data_test.csv -m model_export
         
 ##### Online
 
     mlflow models serve -m model_export
-    mlflow models serve -m model_export & (background)
-        
+    
+
+#### Finishing the Environment
+
+- Deactivate the Virtual Environment and finish the docker containers
+
+      conda deactivate
+      docker stop test
+      docker stop pg_mlflow
+
+
+
+
+
+
 ![alt][model_serving]
 
 
