@@ -101,12 +101,12 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
 ##### Batch: Download the mlflow model and send it to the Production Environment
 
-    mlflow artifacts download -r <ID DEL MODELO>
+    mlflow artifacts download -r <MODEL-ID>
         
         
 ##### Online: Create a endpoint to push requests (View the example in /serve/real_time_inference.ipynb notebook)
 
-    mlflow models serve -m <PATH EXPORTADO>model_export
+    mlflow models serve -m <EXPORTED-PATH>/model_export
     
 
 #### Finishing the Environment
@@ -135,7 +135,7 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
 #### CI/CD: Continuous machine learning integration
 
-You can see the CI/CD pipeline for the credit card default model with Github Actions ("Actions" tab on Github), each commit triggers and executes the CI/CD pipeline (the last commit https://github.com/lcajachahua/model-credit-mlflow/commit/ff393ce2784151e3ac78f12c215b64bf527697f9#comments)
+You can see the CI/CD pipeline for the credit card default model with Github Actions. Each commit triggers and executes the CI/CD pipeline 
 
 ![alt][cicd_ml]
         
