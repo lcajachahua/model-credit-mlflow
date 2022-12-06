@@ -99,14 +99,12 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
 #### Mlflow Deployment
 
-##### Batch
+##### Batch: Download the mlflow model and send it to the Production Environment
 
-- Download the mlflow model
-
-      mlflow artifacts download -r <ID DEL MODELO>
+    mlflow artifacts download -r <ID DEL MODELO>
         
         
-##### Online (Requiere servicio web activo)
+##### Online: Create a endpoint to push requests (View the example in /serve/real_time_inference.ipynb notebook)
 
     mlflow models serve -m <PATH EXPORTADO>model_export
     
