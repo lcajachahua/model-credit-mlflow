@@ -36,9 +36,13 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
       docker ps -a
 
+- Create the Project Repo
+
+      mkdir ProjectRepos
+
 - Move to the Project Repo
 
-      cd Documents/ProjectRepos
+      cd ProjectRepos
 
 - Download this Repo
 
@@ -51,10 +55,6 @@ For sake of simplicity, the components of the architecture will be explain as "s
 - Build the project
 
       docker build -t model-credit-mlflow .
-
-- (Optional) You can now start Jupyterlab or continue working on command line
-
-      jupyter lab
 
 - Activate the Virtual Environment
 
