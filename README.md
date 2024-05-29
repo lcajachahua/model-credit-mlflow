@@ -36,13 +36,9 @@ For sake of simplicity, the components of the architecture will be explain as "s
 
       docker ps -a
 
-- Create the Project Repo
-
-      mkdir ProjectRepos
-
 - Move to the Project Repo
 
-      cd ProjectRepos
+      cd Documents/ProjectRepos
 
 - Download this Repo
 
